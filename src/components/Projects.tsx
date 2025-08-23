@@ -1,88 +1,21 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  longDescription: string;
-  technologies: string[];
-  image: string;
-  liveUrl: string;
-  githubUrl: string;
-  category: string;
-  featured: boolean;
-}
+import { useNavigate } from "react-router-dom";
+import DemoModal from "./DemoModal";
+import type { Project } from "../data/projects";
+import {  categories, getProjectsByCategory } from "../data/projects";
 
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [showDemoModal, setShowDemoModal] = useState(false);
+  const [demoProject, setDemoProject] = useState<Project | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const navigate = useNavigate();
 
-  const projects: Project[] = [
-    {
-      id: 'diarium-super-apps',
-      title: "Diarium Super Apps",
-      description:
-        "Internal app for Telkom Indonesia to support employee activities and streamline communication",
-      longDescription:
-        "Developed an internal app for Telkom Indonesia to support employee activities and streamline communication within the company. I improved the Attendance Module, making tracking more accurate and efficient. Integrated an OKR system to align individual tasks with team goals, boosting productivity.",
-      technologies: ["Flutter", "Dart", "Firebase", "REST API", "OKR Integration", "UI Components"],
-      image: "🏢",
-      liveUrl: "https://internal.telkom.co.id",
-      githubUrl: "https://github.com/private/diarium-super-apps",
-      category: "mobile",
-      featured: true,
-    },
-    {
-      id: 'dapen-telkom-mobile',
-      title: "Dapen Telkom Mobile",
-      description:
-        "Mobile app for Telkom's pensioners providing easy access to pension information and services",
-      longDescription:
-        "Created a mobile app for Telkom's pensioners, providing easy access to pension information and services. I resolved critical issues in the login flow, including facial recognition and token authentication, reducing user complaints. I redesigned the app's interface using Flutter and Figma to improve accessibility, especially for senior users.",
-      technologies: [
-        "Flutter",
-        "Dart",
-        "Figma",
-        "Facial Recognition",
-        "Token Authentication",
-        "REST API"
-      ],
-      image: "👴",
-      liveUrl: "https://play.google.com/store/apps/details?id=com.telkom.dapen",
-      githubUrl: "https://github.com/private/dapen-telkom-mobile",
-      category: "mobile",
-      featured: true,
-    },
-    {
-      id: 'peoplehub',
-      title: "PeopleHub",
-      description:
-        "HR platform designed to enhance employee engagement and streamline HR processes",
-      longDescription:
-        "PeopleHub is an HR platform designed to enhance employee engagement and streamline HR processes. The app centralizes employee data, announcements, and collaboration tools, aiming to boost communication and operational efficiency across teams. Currently in development for internal use with potential for multi-company support.",
-      technologies: ["Flutter", "Dart", "Firebase", "HR Management", "Employee Engagement", "Collaboration Tools"],
-      image: "👥",
-      liveUrl: "https://peoplehub-internal.example.com",
-      githubUrl: "https://github.com/private/peoplehub",
-      category: "mobile",
-      featured: false,
-    },
-  ];
+  // Projects and categories are now imported from centralized data
 
-  const categories = [
-    { id: "all", label: "All Projects" },
-    { id: "mobile", label: "Mobile Apps" },
-    { id: "web", label: "Web Apps" },
-  ];
-
-  const filteredProjects =
-    selectedCategory === "all"
-      ? projects
-      : projects.filter((project) => project.category === selectedCategory);
+  const filteredProjects = getProjectsByCategory(selectedCategory);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -102,7 +35,11 @@ const Projects = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="projects" className="py-20 relative overflow-hidden bg-gradient-to-br from-gray-950 via-black to-teal-950">
+    <section
+      ref={sectionRef}
+      id="projects"
+      className="py-20 relative overflow-hidden bg-gradient-to-br from-gray-950 via-black to-teal-950"
+    >
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
@@ -136,7 +73,7 @@ const Projects = () => {
           {filteredProjects.map((project, index) => (
             <div
               key={project.id}
-              className={`glass-effect rounded-2xl overflow-hidden hover:scale-105 transition-all duration-500 cursor-pointer ${
+              className={`group bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700/50 hover:border-teal-500/50 transition-all duration-300 cursor-pointer transform hover:scale-105 ${
                 isVisible
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
@@ -145,15 +82,34 @@ const Projects = () => {
               onClick={() => navigate(`/project/${project.id}`)}
             >
               {/* Project Image/Icon */}
-              <div className="h-48 bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center relative overflow-hidden">
-                <div className="text-6xl">{project.image}</div>
+              <div className="relative h-48 overflow-hidden">
+                {project.image.startsWith("/") ? (
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${project.image}`);
+                      console.error(e);
+                    }}
+                    onLoad={() => {
+                      console.log(
+                        `Successfully loaded image: ${project.image}`
+                      );
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center">
+                    <div className="text-6xl text-white">{project.image}</div>
+                  </div>
+                )}
                 {project.featured && (
-                  <div className="absolute top-4 right-4 bg-yellow-500 text-black px-2 py-1 rounded-full text-xs font-bold">
+                  <div className="absolute top-4 right-4 bg-yellow-500 text-black px-2 py-1 rounded-full text-xs font-bold z-10">
                     Featured
                   </div>
                 )}
-                <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                  <div className="text-white opacity-0 hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                  <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <svg
                       className="w-8 h-8"
                       fill="none"
@@ -214,15 +170,16 @@ const Projects = () => {
                   >
                     View Details
                   </button>
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDemoProject(project);
+                      setShowDemoModal(true);
+                    }}
                     className="flex-1 border border-teal-400 text-teal-400 py-2 px-4 rounded-lg text-center text-sm font-medium hover:bg-teal-400 hover:text-white transition-all duration-300"
-                    onClick={(e) => e.stopPropagation()}
                   >
                     Live Demo
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -271,7 +228,15 @@ const Projects = () => {
                 </div>
 
                 <div className="h-48 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl flex items-center justify-center mb-6">
-                  <div className="text-8xl">{selectedProject.image}</div>
+                  {selectedProject.image.startsWith("/") ? (
+                    <img
+                      src={selectedProject.image}
+                      alt={selectedProject.title}
+                      className="w-full h-full object-cover rounded-xl"
+                    />
+                  ) : (
+                    <div className="text-8xl">{selectedProject.image}</div>
+                  )}
                 </div>
 
                 <p className="text-gray-300 mb-6 leading-relaxed">
@@ -279,14 +244,15 @@ const Projects = () => {
                 </p>
 
                 <div className="flex gap-4">
-                  <a
-                    href={selectedProject.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => {
+                      setDemoProject(selectedProject);
+                      setShowDemoModal(true);
+                    }}
                     className="flex-1 bg-gradient-to-r from-teal-600 to-cyan-600 text-white py-3 px-6 rounded-lg text-center font-medium hover:from-teal-700 hover:to-cyan-700 transition-all duration-300"
                   >
                     View Live Demo
-                  </a>
+                  </button>
                   <a
                     href={selectedProject.githubUrl}
                     target="_blank"
@@ -300,6 +266,12 @@ const Projects = () => {
             </div>
           </div>
         )}
+
+        <DemoModal
+          isOpen={showDemoModal}
+          onClose={() => setShowDemoModal(false)}
+          project={demoProject}
+        />
       </div>
 
       {/* Background Elements */}

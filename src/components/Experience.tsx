@@ -13,7 +13,7 @@ interface ExperienceItem {
 
 const Experience = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [activeItem, setActiveItem] = useState(0);
+
   const sectionRef = useRef<HTMLElement>(null);
 
   const experiences: ExperienceItem[] = [
@@ -99,7 +99,11 @@ const Experience = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="experience" className="py-20 relative overflow-hidden bg-gradient-to-br from-teal-950 via-black to-gray-950">
+    <section
+      ref={sectionRef}
+      id="experience"
+      className="py-20 relative overflow-hidden bg-gradient-to-br from-teal-950 via-black to-gray-950"
+    >
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
