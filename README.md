@@ -5,6 +5,8 @@ This template provides a minimal setup to get React working in Vite with HMR and
 ## Deployment Status
 Last updated: January 2025
 
+*Last updated: Force deployment refresh*
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
