@@ -52,7 +52,7 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.PROD ? '/portfolio' : '/'}>
       <Routes>
         <Route path="/" element={<MainPortfolio />} />
         <Route path="/project/:id" element={<ProjectDetails />} />
