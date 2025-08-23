@@ -36,7 +36,7 @@ export const projects: Project[] = [
       "JWT Authentication",
       "Cloud Storage",
     ],
-    image: "/diarium.png",
+    image: `${import.meta.env.BASE_URL}diarium.png`,
     liveUrl: "https://diarium-demo.com",
     githubUrl: "https://github.com/AdriF31/diarium",
     category: "mobile",
