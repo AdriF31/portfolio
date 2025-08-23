@@ -97,7 +97,7 @@ const Hero = () => {
             <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full bg-gradient-to-br from-teal-400 via-cyan-500 to-slate-600 p-2">
               <div className="w-full h-full rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
                 <img 
-                  src="/avatar.png" 
+                  src={`${import.meta.env.BASE_URL}avatar.png`} 
                   alt="Adri Fatwal Fiqhi" 
                   className="w-full h-full object-cover object-center rounded-full"
                 />

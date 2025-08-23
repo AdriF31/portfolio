@@ -85,7 +85,7 @@ export const projects: Project[] = [
       "AWS S3",
       "Docker",
     ],
-    image: "/anynote.png",
+    image: "📝",
     liveUrl: "https://anynote-demo.com",
     githubUrl: "https://github.com/AdriF31/anynote",
     category: "web",
