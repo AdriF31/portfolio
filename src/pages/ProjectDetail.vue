@@ -11,11 +11,8 @@ const project = computed(() => projects.find(p => p.slug === route.params.slug))
 const projectIndex = computed(() => projects.findIndex(p => p.slug === route.params.slug))
 const nextProject = computed(() => projects[(projectIndex.value + 1) % projects.length])
 
-const imageModules = import.meta.glob('../assets/**/*.png', { eager: true })
-
 function getImageUrl(path) {
-  const key = `../assets/${path}`
-  return imageModules[key]?.default || ''
+  return `${import.meta.env.BASE_URL}images/${path}`
 }
 
 onMounted(() => {
