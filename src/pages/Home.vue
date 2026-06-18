@@ -30,7 +30,7 @@ onMounted(() => { setTimeout(() => visible.value = true, 100) })
       <div class="hero-links">
         <a :href="profile.github" target="_blank" rel="noopener">GitHub</a>
         <a :href="profile.linkedin" target="_blank" rel="noopener">LinkedIn</a>
-        <a :href="'tel:' + profile.phone">{{ profile.phone }}</a>
+        <a :href="'https://wa.me/' + profile.phone.replace(/[\s+]/g, '')" target="_blank" rel="noopener">{{ profile.phone }}</a>
       </div>
     </section>
 
