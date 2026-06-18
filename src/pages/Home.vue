@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { profile, experiences, skills, education, projects } from '../data'
+import mePhoto from '../assets/me.png'
 
 const visible = ref(false)
 onMounted(() => { setTimeout(() => visible.value = true, 100) })
@@ -19,7 +20,7 @@ onMounted(() => { setTimeout(() => visible.value = true, 100) })
           </h1>
           <p class="hero-subtitle">{{ profile.title }} <span class="hero-loc">· {{ profile.location }}</span></p>
         </div>
-        <img src="../assets/me.png" alt="Photo of me" class="hero-photo" />
+        <img :src="mePhoto" alt="Photo of me" class="hero-photo" />
       </div>
       <p class="hero-desc">{{ profile.summary }}</p>
       <div class="hero-actions">
