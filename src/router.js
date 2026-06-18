@@ -4,7 +4,7 @@ import Projects from './pages/Projects.vue'
 import ProjectDetail from './pages/ProjectDetail.vue'
 
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/portfolio/'),
   routes: [
     { path: '/', component: Home },
     { path: '/projects', component: Projects },
