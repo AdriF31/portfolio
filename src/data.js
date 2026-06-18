@@ -4,8 +4,8 @@ export const profile = {
   location: 'Bandung, Indonesia',
   email: 'adrifatwa31@gmail.com',
   phone: '+62 85797859312',
-  github: 'https://github.com/adrifatwa',
-  linkedin: 'https://linkedin.com/in/adrifatwa',
+  github: 'https://github.com/AdriF31',
+  linkedin: 'https://linkedin.com/in/adrifatwalfiqhi',
   summary: 'Mobile Developer with 4 years of experience specializing in high-traffic cross-platform applications using Flutter. Proven track record of architecting scalable enterprise solutions, optimizing app performance, and delivering robust offline-first experiences.'
 }
 
